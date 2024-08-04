@@ -25,6 +25,7 @@ public class RideRequestEntity {
     @Column(columnDefinition = "Geometry(Point,4326)")
     private Point dropOffLocation;
 
+    private Double fare;
     @CreationTimestamp
     private LocalDateTime requestedTime;
 

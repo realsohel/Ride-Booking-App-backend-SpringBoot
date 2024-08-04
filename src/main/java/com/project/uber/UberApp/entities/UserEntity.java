@@ -2,10 +2,18 @@ package com.project.uber.UberApp.entities;
 
 import com.project.uber.UberApp.entities.enums.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "app_user")
 public class UserEntity {
     @Id
@@ -14,8 +22,8 @@ public class UserEntity {
     private String name;
 
     @Column(unique = true)
-    private String password;
     private String email;
+    private String password;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
