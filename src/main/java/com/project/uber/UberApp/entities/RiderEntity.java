@@ -1,15 +1,15 @@
 package com.project.uber.UberApp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "rider")
+@Getter
+@Setter
 public class RiderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
