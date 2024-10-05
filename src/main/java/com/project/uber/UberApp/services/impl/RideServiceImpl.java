@@ -4,6 +4,7 @@ import com.project.uber.UberApp.dto.RideRequestDto;
 import com.project.uber.UberApp.entities.DriverEntity;
 import com.project.uber.UberApp.entities.RideEntity;
 import com.project.uber.UberApp.entities.RideRequestEntity;
+import com.project.uber.UberApp.entities.RiderEntity;
 import com.project.uber.UberApp.entities.enums.RideRequestStatus;
 import com.project.uber.UberApp.entities.enums.RideStatus;
 import com.project.uber.UberApp.exceptions.ResourceNotFoundException;
@@ -33,11 +34,6 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public void matchWithDrivers(RideRequestDto rideRequestDto) {
-
-    }
-
-    @Override
     public RideEntity createNewRide(RideRequestEntity rideRequestEntity, DriverEntity driverEntity) {
         rideRequestEntity.setRideRequestStatus(RideRequestStatus.CONFIRMED);
 
@@ -61,13 +57,14 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public Page<RideEntity> getAllRidesOfRider(Long riderId, PageRequest pageRequest) {
-        return null;
+    public Page<RideEntity> getAllRidesOfRider(RiderEntity rider, PageRequest pageRequest) {
+
+        return rideRepository.findByRider(rider, pageRequest);
     }
 
     @Override
-    public Page<RideEntity> getAllRidesOfDriver(Long driverId, PageRequest pageRequest) {
-        return null;
+    public Page<RideEntity> getAllRidesOfDriver(DriverEntity driver, PageRequest pageRequest) {
+        return rideRepository.findByDriver(driver, pageRequest);
     }
 
     private String generateOtp(){
