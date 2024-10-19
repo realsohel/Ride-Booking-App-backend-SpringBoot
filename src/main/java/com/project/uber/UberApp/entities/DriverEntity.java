@@ -10,13 +10,15 @@ import org.locationtech.jts.geom.Point;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "drivers")
+@Table(name = "drivers", indexes = {
+        @Index(name = "idx_driver_vehicle_id", columnList = "vehicle_id")
+})
 public class DriverEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double rating;
+    private Double rating;  
 
     @OneToOne
     @JoinColumn(name = "user_id")

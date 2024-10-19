@@ -8,9 +8,11 @@ import com.project.uber.UberApp.entities.*;
 import com.project.uber.UberApp.entities.enums.RideRequestStatus;
 import com.project.uber.UberApp.entities.enums.RideStatus;
 import com.project.uber.UberApp.exceptions.ResourceNotFoundException;
+import com.project.uber.UberApp.repositories.DriverRepository;
 import com.project.uber.UberApp.repositories.RideRequestRepository;
 import com.project.uber.UberApp.repositories.RiderRepository;
 import com.project.uber.UberApp.services.DriverService;
+import com.project.uber.UberApp.services.RatingService;
 import com.project.uber.UberApp.services.RideService;
 import com.project.uber.UberApp.services.RiderService;
 import com.project.uber.UberApp.strategies.RideStrategyManager;
@@ -28,13 +30,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class RiderServiceImpl implements RiderService {
+    private final DriverRepository driverRepository;
     private final ModelMapper modelMapper;
-
     private final RideStrategyManager rideStrategyManager;
     private final RideRequestRepository rideRequestRepository;
     private final RiderRepository riderRepository;
     private final RideService rideService;
     private final DriverService driverService;
+    private final RatingService ratingService;
 
     @Override
     @Transactional
@@ -80,8 +83,19 @@ public class RiderServiceImpl implements RiderService {
     }
 
     @Override
+    @Transactional
     public DriverDto rateDriver(Long rideId, Integer rating) {
-        return null;
+        RideEntity ride = rideService.getRideById(rideId);
+        RiderEntity rider = getCurrentRider();
+
+        if(!rider.equals(ride.getRider())){
+            throw new RuntimeException("User is not the Rider of this ride..");
+        }
+        if(!ride.getRideStatus().equals(RideStatus.ENDED)){
+            throw new RuntimeException("Ride is not ended, hence you cannot give the rating now. The status is: "+ ride.getRideStatus() );
+        }
+
+        return ratingService.RateDriver(ride, rating);
     }
 
     @Override

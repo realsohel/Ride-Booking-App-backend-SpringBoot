@@ -25,7 +25,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
                 .stream()
                 .anyMatch(route -> request.getURI().getPath().contains(route));
 
-        if(request.getURI().getPath().contains("/v3/api-docs"))return body;
+//        if(request.getURI().getPath().contains("/v3/api-docs"))return body;
         if (body instanceof ApiResponse<?>)
             return body;
 
