@@ -1,12 +1,14 @@
 package com.project.uber.UberApp.repositories;
 
 import com.project.uber.UberApp.entities.DriverEntity;
+import com.project.uber.UberApp.entities.UserEntity;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DriverRepository extends JpaRepository<DriverEntity,Long> {
@@ -28,4 +30,6 @@ public interface DriverRepository extends JpaRepository<DriverEntity,Long> {
             "LIMIT 10" , nativeQuery = true
     )
     List<DriverEntity> findTenNearbyTopRatedDrivers(Point pickUpLocation);
+
+    Optional<DriverEntity> findByUser(UserEntity user);
 }

@@ -3,10 +3,7 @@ package com.project.uber.UberApp.services.impl;
 import com.project.uber.UberApp.dto.DriverDto;
 import com.project.uber.UberApp.dto.RideDto;
 import com.project.uber.UberApp.dto.RiderDto;
-import com.project.uber.UberApp.entities.DriverEntity;
-import com.project.uber.UberApp.entities.RideEntity;
-import com.project.uber.UberApp.entities.RideRequestEntity;
-import com.project.uber.UberApp.entities.RiderEntity;
+import com.project.uber.UberApp.entities.*;
 import com.project.uber.UberApp.entities.enums.RideRequestStatus;
 import com.project.uber.UberApp.entities.enums.RideStatus;
 import com.project.uber.UberApp.exceptions.ResourceNotFoundException;
@@ -18,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Driver;
@@ -152,8 +150,10 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverEntity getCurrentDriver() {
-        return driverRepository.findById(2L)
-                .orElseThrow(()-> new ResourceNotFoundException("Driver not found with id : 2"));
+        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return driverRepository.findByUser(user)
+                .orElseThrow(()-> new ResourceNotFoundException("Driver not associated with user id : "+ user.getId()));
     }
 
     public DriverEntity createNewDriver(DriverEntity driver){

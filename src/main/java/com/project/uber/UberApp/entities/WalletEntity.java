@@ -20,7 +20,7 @@ public class WalletEntity {
 
     private Double balance=0.0;
 
-    @OneToOne(fetch = FetchType.LAZY , optional = false)
+    @OneToOne(fetch = FetchType.LAZY , optional = false, cascade = CascadeType.DETACH)
     private UserEntity user;
 
     @OneToMany(mappedBy = "wallet" , fetch = FetchType.LAZY)

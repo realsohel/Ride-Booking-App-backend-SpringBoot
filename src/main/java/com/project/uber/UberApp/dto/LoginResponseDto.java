@@ -1,5 +1,4 @@
 package com.project.uber.UberApp.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,9 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignupDto {
-
-    private String name;
-    private String email;
-    private String password;
+public class LoginResponseDto {
+    private String accessToken;
 }

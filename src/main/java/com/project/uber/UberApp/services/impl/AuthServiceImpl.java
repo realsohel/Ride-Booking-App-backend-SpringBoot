@@ -9,6 +9,7 @@ import com.project.uber.UberApp.entities.enums.Role;
 import com.project.uber.UberApp.exceptions.ResourceNotFoundException;
 import com.project.uber.UberApp.exceptions.RuntimeConflictException;
 import com.project.uber.UberApp.repositories.UserRepository;
+import com.project.uber.UberApp.security.JWTService;
 import com.project.uber.UberApp.services.AuthService;
 import com.project.uber.UberApp.services.DriverService;
 import com.project.uber.UberApp.services.RiderService;
@@ -17,6 +18,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -31,9 +36,21 @@ public class AuthServiceImpl implements AuthService {
     private final RiderService riderService;
     private final DriverService driverService;
     private final WalletService walletService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
     @Override
-    public String login(String email, String password) {
-        return null;
+    public String[] login(String email, String password) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email,password)
+        );
+
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        String[] tokens = {accessToken, refreshToken};
+        return tokens;
     }
 
     @Override
@@ -51,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
         UserEntity user = modelMapper.map(signupDto, UserEntity.class);
 
         user.setRoles(Set.of(Role.RIDER));
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserEntity saveUser = userRepository.save(user);
 
 //        Creating User related Entities....
@@ -88,5 +105,29 @@ public class AuthServiceImpl implements AuthService {
         DriverEntity savedDriver = driverService.createNewDriver(driver);
 
         return modelMapper.map(savedDriver,DriverDto.class);
+    }
+
+    @Override
+    @Transactional
+    public String deleteUser(Long userId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(
+                ()->  new ResourceNotFoundException("User not found with Id: " + userId)
+        );
+
+        user.setRoles(null);
+        userRepository.save(user);
+        userRepository.deleteById(userId);
+
+        return "User deleted Successfully.";
+    }
+
+    @Override
+    public String refreshToken(String refreshToken) {
+        Long userId = jwtService.getUserIdFromToken(refreshToken);
+        UserEntity user = userRepository.findById(userId).orElseThrow(
+                ()-> new ResourceNotFoundException("User not found with Id: "+userId)
+        );
+
+        return jwtService.generateAccessToken(user);
     }
 }
