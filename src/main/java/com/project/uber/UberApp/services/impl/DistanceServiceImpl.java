@@ -51,31 +51,3 @@ class OSRMResponseDto{
 class OSRMRoute{
     private Double distance;
 }
-    //    @Override
-//    public double calculateDistance(Point src, Point des) {
-//        try{
-//            String uri = src.getX()+","+src.getY()+";"+des.getX()+","+des.getY();
-//            OSRMResponseDto responseDto = RestClient.builder()
-//                    .baseUrl(OSRM_API_BASE_URL)
-//                    .build()
-//                    .get()
-//                    .uri(uri)
-//                    .retrieve()
-//                    .body(OSRMResponseDto.class);
-//            return responseDto.getRoutes().get(0).getDistance()/1000.0;
-//        }catch (Exception e){
-//            throw new RuntimeException("Error fetching OSRM API : " + e.getMessage());
-//        }
-//
-//
-//    }
-//}
-//@Data
-//class OSRMResponseDto{
-//    private List<OSRMRoutes> routes;
-//}
-//
-//@Data
-//class OSRMRoutes{
-//    private Double distance;
-//}
