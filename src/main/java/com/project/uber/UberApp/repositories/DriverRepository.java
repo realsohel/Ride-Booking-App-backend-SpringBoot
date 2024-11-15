@@ -25,7 +25,7 @@ public interface DriverRepository extends JpaRepository<DriverEntity,Long> {
 
     @Query(value = "SELECT d.* " +
             "FROM drivers  d " +
-            "where d.available=true  AND ST_DWithin(d.current_location, :pickUpLocation, 15000) " +
+            "where d.available=true  AND ST_DWithin(d.current_location, :pickUpLocation, 10000) " +
             "ORDER BY d.rating DESC " +
             "LIMIT 10" , nativeQuery = true
     )

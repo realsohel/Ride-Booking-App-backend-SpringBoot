@@ -11,10 +11,7 @@ import com.project.uber.UberApp.exceptions.ResourceNotFoundException;
 import com.project.uber.UberApp.repositories.DriverRepository;
 import com.project.uber.UberApp.repositories.RideRequestRepository;
 import com.project.uber.UberApp.repositories.RiderRepository;
-import com.project.uber.UberApp.services.DriverService;
-import com.project.uber.UberApp.services.RatingService;
-import com.project.uber.UberApp.services.RideService;
-import com.project.uber.UberApp.services.RiderService;
+import com.project.uber.UberApp.services.*;
 import com.project.uber.UberApp.strategies.RideStrategyManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,6 +37,7 @@ public class RiderServiceImpl implements RiderService {
     private final RideService rideService;
     private final DriverService driverService;
     private final RatingService ratingService;
+    private final EmailSenderService emailSenderService;
 
     @Override
     @Transactional
@@ -57,7 +56,22 @@ public class RiderServiceImpl implements RiderService {
         List<DriverEntity> drivers = rideStrategyManager
                 .driverMatchingStrategy(rider.getRating()).findMatchingDriver(rideRequestEntity);
 
-        // TODO: Send notification to all the drivers.
+        List<String> driversEmailList = new ArrayList<>();
+        for (DriverEntity driver : drivers) {
+            driversEmailList.add(driver.getUser().getEmail());
+        }
+
+// Convert the List to an array
+    String[] driversEmail = driversEmailList.toArray(new String[0]);
+
+
+        emailSenderService.sendEmail(driversEmail,
+                "Request for a New Ride !!",
+                "Here's a request for a new ride from "+ rideRequestDto.getPickUpLocation() + " to " + rideRequestDto.getDropOffLocation()  +
+                        ". Would you like to accept this ride ?\n");
+
+
+
         RideRequestEntity savedRideRequest = rideRequestRepository.save(rideRequestEntity);
 //        log.info(rideRequestEntity.toString());
         return modelMapper.map(savedRideRequest,RideRequestDto.class);

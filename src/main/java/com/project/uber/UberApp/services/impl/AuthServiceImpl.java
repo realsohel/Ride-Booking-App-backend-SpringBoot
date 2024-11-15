@@ -10,10 +10,7 @@ import com.project.uber.UberApp.exceptions.ResourceNotFoundException;
 import com.project.uber.UberApp.exceptions.RuntimeConflictException;
 import com.project.uber.UberApp.repositories.UserRepository;
 import com.project.uber.UberApp.security.JWTService;
-import com.project.uber.UberApp.services.AuthService;
-import com.project.uber.UberApp.services.DriverService;
-import com.project.uber.UberApp.services.RiderService;
-import com.project.uber.UberApp.services.WalletService;
+import com.project.uber.UberApp.services.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final EmailSenderService emailSenderService;
     @Override
     public String[] login(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(
@@ -103,6 +101,12 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         DriverEntity savedDriver = driverService.createNewDriver(driver);
+        emailSenderService.sendEmail(user.getEmail(),
+                "Boarding as a new driver",
+                "Dear user, \n Congratulations !! You have now become a Driver-partner with our RideON application. \n" +
+                        "You can now a accept a new ride from the riders and can earn money.\n" +
+                        "All the best for your future rides.\n" +
+                        "Regards,\n Team RideOn. ");
 
         return modelMapper.map(savedDriver,DriverDto.class);
     }

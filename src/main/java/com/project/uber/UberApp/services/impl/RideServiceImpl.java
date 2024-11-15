@@ -1,6 +1,5 @@
 package com.project.uber.UberApp.services.impl;
 
-import com.project.uber.UberApp.dto.RideRequestDto;
 import com.project.uber.UberApp.entities.DriverEntity;
 import com.project.uber.UberApp.entities.RideEntity;
 import com.project.uber.UberApp.entities.RideRequestEntity;
@@ -9,6 +8,7 @@ import com.project.uber.UberApp.entities.enums.RideRequestStatus;
 import com.project.uber.UberApp.entities.enums.RideStatus;
 import com.project.uber.UberApp.exceptions.ResourceNotFoundException;
 import com.project.uber.UberApp.repositories.RideRepository;
+import com.project.uber.UberApp.services.EmailSenderService;
 import com.project.uber.UberApp.services.RideRequestService;
 import com.project.uber.UberApp.services.RideService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,7 @@ public class RideServiceImpl implements RideService {
     private final RideRepository rideRepository;
     private final RideRequestService rideRequestService;
     private final ModelMapper modelMapper;
+    private final EmailSenderService emailSenderService;
 
     @Override
     public RideEntity getRideById(Long rideId) {
@@ -45,6 +46,15 @@ public class RideServiceImpl implements RideService {
         ride.setId(null);
 
         rideRequestService.update(rideRequestEntity);
+
+        emailSenderService.sendEmail(rideRequestEntity.getRider().getUser().getEmail(),
+                "Your ride have been accepted !!",
+                "Dear user, \n Your ride have been accepted by our driver-partner "+driverEntity.getUser().getName() +
+                        "with the vehicle no. " + driverEntity.getVehicleId() + ". The driver will reach to your source location in a moment."+
+                        "Your 4-digit OTP is: "+ ride.getOtp() +" Be careful don't share the OTP with anyone except the Authorized Driver."+
+                        "The fare of your ride is Rs." + rideRequestEntity.getFare() +"\n All the best for your ride and Happy Journey.");
+
+
 
         return rideRepository.save(ride);
     }

@@ -7,6 +7,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -37,7 +39,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 
             simpleMailMessage.setTo(toEmail);
-//            simpleMailMessage.setBcc(toEmail);
+            simpleMailMessage.setBcc(toEmail);
             simpleMailMessage.setSubject(subject);
             simpleMailMessage.setText(body);
 
