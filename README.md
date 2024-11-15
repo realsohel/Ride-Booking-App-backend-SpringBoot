@@ -6,7 +6,7 @@
 
 ---
 ## LLD with flow-chart - 
-![ LLD of RideOn ](https://drive.google.com/file/d/1rSZQ3kjxDlQB2T560wscZznBFe3VQxX5/view)
+![LLD of RideOn](https://drive.google.com/file/d/1rSZQ3kjxDlQB2T560wscZznBFe3VQxX5)
 
 --- 
 
