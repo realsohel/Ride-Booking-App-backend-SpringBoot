@@ -10,9 +10,10 @@
 
 --- 
 
-## Use Case Diagram - 
-[View PDF](https://drive.google.com/file/d/1fsebQ-r-F-D7Ely3nhSUo7JwMI_2xywY/view?usp=drive_link)
+## Use Case Diagram
+![Use Case Diagram](https://drive.google.com/uc?export=view&id=1Xr1Y2mxTi-lg5eUlIvECo0p_EJ59Z5Ke)
 
+---
 
 ## Table of Contents
 1. [User Roles and Permissions](#user-roles-and-permissions)
