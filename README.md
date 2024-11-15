@@ -5,8 +5,8 @@
 **Overview**: The RideOn application provides a seamless ride-booking experience powered by a robust backend architecture built with Spring Boot. The app supports three types of users – Riders, Drivers, and Admins – and offers essential functionalities for ride management, payment processing, and user authentication. With strategically designed features like driver matching and fare calculation, RideOn aims to deliver efficient, safe, and user-friendly transportation options.
 
 ---
-## LLD with flow-chart - 
-![LLD of RideOn](https://drive.google.com/file/d/1rSZQ3kjxDlQB2T560wscZznBFe3VQxX5)
+## LLD with Flowchart
+![LLD of RideOn](https://drive.google.com/uc?export=view&id=1rSZQ3kjxDlQB2T560wscZznBFe3VQxX5)
 
 --- 
 
