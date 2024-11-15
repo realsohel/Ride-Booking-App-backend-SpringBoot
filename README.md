@@ -6,7 +6,13 @@
 
 ---
 ## LLD with flow-chart - 
-![ LLD of RideOn ]([https://github.com/user/repo/blob/branch/path-to-image.png](https://drive.google.com/file/d/1rSZQ3kjxDlQB2T560wscZznBFe3VQxX5/view))
+![ LLD of RideOn ](https://drive.google.com/file/d/1rSZQ3kjxDlQB2T560wscZznBFe3VQxX5/view)
+
+--- 
+
+## Use Case Diagram - 
+[View PDF](https://drive.google.com/file/d/1fsebQ-r-F-D7Ely3nhSUo7JwMI_2xywY/view?usp=drive_link)
+
 
 ## Table of Contents
 1. [User Roles and Permissions](#user-roles-and-permissions)
